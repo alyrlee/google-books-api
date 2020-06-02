@@ -1,0 +1,8 @@
+.BookCard {
+    background: linear-gradient(to top, red, white);
+    width: 200px;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
