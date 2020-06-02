@@ -12,7 +12,7 @@ class App extends Component {
 
     this.state = {
       books: [],
-      search : '',
+      searchEntry : '',
       printType: "all",
       bookType: "no-filter",
       q: ' ',
@@ -37,10 +37,10 @@ setBookSelected(sel) {
   });
 }
 
-search(inp) {
+searchInput(inp) {
   console.log("Search entry is: ", inp);
   this.setState({
-    search: inp
+    searchEntry: inp
   });
 }
 
@@ -52,19 +52,19 @@ handleSubmit(e) {
 
   componentDidMount() {
     
-    let search = `${this.state.search}`;  
-    const baseUrl = 'https://www.googleapis.com/books/v1/volumes/';
+    let searchEntry = `${this.state.searchEntry}`;
+    const baseUrl = "https://www.googleapis.com/books/v1/volumes/?q=search+terms";
     
     
     const API_Key='AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM';
     // `https://www.googleapis.com/books/v1/volumes?q=${searchEntry}&key=AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM`;
-    
+    // let q =  `${this.searchEntry}`;
     let printType = `${this.state.isPrintType}`;
     let filter = 
     this.state.isBookType !== "no-filter"
       ? `$filter=${this.state.isBookType}`
       : "";
-    const queryString = `${baseUrl}?q=${search}&${filter}&${printType}&key=${API_Key}`;
+    const queryString = `${baseUrl}?q=${searchEntry}&${filter}&${printType}&key=${API_Key}`;
     
     console.log(queryString);
     

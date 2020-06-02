@@ -23,7 +23,6 @@ handleChange(field,value){
 render(){
     let formSubmit = (event) => {
       event.preventDefault();
-      this.props.BookList(this.state.books, this.state.search, this.state.printType, this.state.bookType);
     }
     return(
       <div className="BookCard">

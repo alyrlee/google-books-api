@@ -10,7 +10,7 @@ render() {
     .map((Book, i) => <Book { ...Book } key={i}/>);
     return (
         <div className="BookList">
-            <Book />
+            {/* <Book /> */}
           {Book}
         </div>
       );
