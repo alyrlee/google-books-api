@@ -3,7 +3,11 @@ import './App.css';
 
 // import Header from './Components/header'
 import BookCard from './Books/BookCard';
-import BookList from './Books/BookList'
+import BookList from './Books/BookList';
+import request from 'superagent';
+import Search from './Search/Search';
+import SearchFilter from './Search/SearchFilter';
+import Book from './/Books/Book';
 
 class App extends Component {
 
@@ -15,7 +19,6 @@ class App extends Component {
       searchEntry : '',
       printType: "all",
       bookType: "no-filter",
-      q: ' ',
       showAddForm: false,
       data: null,
       error: null
@@ -49,44 +52,73 @@ handleSubmit(e) {
   console.log("submit handled!");
 }
 
-
-  componentDidMount() {
-    
-    let searchEntry = `${this.state.searchEntry}`;
-    const baseUrl = "https://www.googleapis.com/books/v1/volumes/?q=search+terms";
-    
-    
-    const API_Key='AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM';
-    // `https://www.googleapis.com/books/v1/volumes?q=${searchEntry}&key=AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM`;
-    // let q =  `${this.searchEntry}`;
-    let printType = `${this.state.isPrintType}`;
-    let filter = 
-    this.state.isBookType !== "no-filter"
-      ? `$filter=${this.state.isBookType}`
-      : "";
-    const queryString = `${baseUrl}?q=${searchEntry}&${filter}&${printType}&key=${API_Key}`;
-    
-    console.log(queryString);
-    
-
-    fetch(queryString)
-.then(response => {
-  if (response.ok) {
-    return response.json();
-  }
-  throw new Error();
-})
-.then(responseJSon => {
-  console.log(responseJSon);
-  this.setState({
-    searchResults: responseJSon.items
-  });
-})
-.catch(e => {
-  console.log(e);
-  this.setState({ error: e.message });
-});
+componentDidMount() {
+  request
+      .get("https://www.googleapis.com/books/v1/volumes")
+      .set('AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM')
+      .query({ q: this.state.searchEntry })
+      .then((data) => {
+          this.setState({ books: [...data.body.items] })
+      })
 }
+
+handleSubmit = (e) => {
+  e.preventDefault();
+  request
+      .get("https://www.googleapis.com/books/v1/volumes")
+      .set('AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM')
+      .query({ q: this.state.searchEntry })
+      .then((data) => {
+          console.log(data);
+          this.setState({ books: [...data.body.items] })
+  })
+}
+
+handleChange = (e) => {
+  this.setState({ searchEntry: e.target.value })
+}
+
+handleSearchFilter = (e) => {
+  this.setState({ sort: e.target.value});
+}
+
+//   componentDidMount() {
+    
+//     let searchEntry = `${this.state.searchEntry}`;
+//     const baseUrl = "https://www.googleapis.com/books/v1/volumes/?q";
+    
+    
+//     const API_Key='AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM';
+//     // `https://www.googleapis.com/books/v1/volumes?q=${searchEntry}&key=AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM`;
+//     let q =  `${this.state.searchEntry}`;
+//     let printType = `${this.state.isPrintType}`;
+//     let filter = 
+//     this.state.isBookType !== "no-filter"
+//       ? `$filter=${this.state.isBookType}`
+//       : "";
+//     const queryString = `${baseUrl}?q=${searchEntry}&${filter}&${printType}&key=${API_Key}`;
+    
+//     console.log(queryString);
+    
+
+//     fetch(queryString)
+// .then(response => {
+//   if (response.ok) {
+//     return response.json();
+//   }
+//   throw new Error();
+// })
+// .then(responseJSon => {
+//   console.log(responseJSon);
+//   this.setState({
+//     searchResults: responseJSon.items
+//   });
+// })
+// .catch(e => {
+//   console.log(e);
+//   this.setState({ error: e.message });
+// });
+// }
 
 
   setShowAddForm(show) {
@@ -103,15 +135,19 @@ handleSubmit(e) {
   }
 
   render() {
-    const page = this.state.showAddForm
-          ? <BookList
-                 showForm={show => this.setShowAddForm(show)} 
-                 handleAdd={BookList => this.BookList(BookList)}/>
-          : <BookCard BookCard={this.state.BookCard} showForm={show => this.setShowAddForm(show)}/>; 
+    // const page = this.state.showAddForm
+    //       ? <BookList
+    //              showForm={show => this.setShowAddForm(show)} 
+    //              handleAdd={BookList => this.BookList(BookList)}/>
+    //       : <BookCard BookCard={this.state.BookCard} />; 
 
     return (
       <div className="App">
-        { page }
+       <Search />
+       <SearchFilter />
+       <Book />
+
+
       </div>
     );
   }

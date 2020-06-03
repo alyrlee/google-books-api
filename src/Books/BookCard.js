@@ -3,6 +3,7 @@ import  './Card.css'
 import Search from '../Search/Search';
 import SearchFilter from '../Search/SearchFilter'
 import BookList from '../Books/BookList'
+import DisplayType from '../Display Type/displayType';
 
 
 export default class BookCard extends Component {
@@ -26,7 +27,7 @@ render(){
     }
     return(
       <div className="BookCard">
-      <form onSubmit={(e) => formSubmit(e)}>
+      <label onSubmit={(e) => formSubmit(e)}>
         <Search
           BookList={this.props.BookList}
           search={this.state.search}
@@ -37,7 +38,8 @@ render(){
           bookType={this.state.bookType}
           change={(field,value) => this.handleChnage(field, value)}/>  
         <BookList />
-      </form>
+        <DisplayType />
+      </label>
       </div>
     )
 }
