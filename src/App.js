@@ -16,7 +16,7 @@ class App extends Component {
 
     this.state = {
       books: [],
-      searchEntry : '',
+      searchEntry: 'harry+potter',
       printType: "all",
       bookType: "no-filter",
       showAddForm: false,
@@ -41,7 +41,7 @@ setBookSelected(sel) {
 }
 
 searchInput(inp) {
-  console.log("Search entry is: ", inp);
+  console.log("Search entry is:", inp);
   this.setState({
     searchEntry: inp
   });
@@ -55,8 +55,7 @@ handleSubmit(e) {
 componentDidMount() {
   request
       .get("https://www.googleapis.com/books/v1/volumes")
-      .set('AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM')
-      .query({ q: this.state.searchEntry })
+      .query({ q: this.state.searchEntry, key:'AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM' })
       .then((data) => {
           this.setState({ books: [...data.body.items] })
       })
@@ -66,8 +65,7 @@ handleSubmit = (e) => {
   e.preventDefault();
   request
       .get("https://www.googleapis.com/books/v1/volumes")
-      .set('AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM')
-      .query({ q: this.state.searchEntry })
+      .query({ q: this.state.searchEntry, key:'AIzaSyAMGQrqEdaJOMug4ThmQqLhVTqoseQaLUM' })
       .then((data) => {
           console.log(data);
           this.setState({ books: [...data.body.items] })
